@@ -61,7 +61,7 @@ go mod init <your-module-name>
 +
 [source,bash]
 ----
-go get github.com/kishan-thanki/go-math-utils
+go get go-math-utils
 ----
 
 . Import the subpackages you need:
@@ -69,10 +69,10 @@ go get github.com/kishan-thanki/go-math-utils
 [source,go]
 ----
 import (
-	"github.com/kishan-thanki/go-math-utils/integer"
-	"github.com/kishan-thanki/go-math-utils/numeric"
-	"github.com/kishan-thanki/go-math-utils/sequence"
-	"github.com/kishan-thanki/go-math-utils/stats"
+	"go-math-utils/integer"
+	"go-math-utils/numeric"
+	"go-math-utils/sequence"
+	"go-math-utils/stats"
 )
 ----
 
@@ -85,10 +85,10 @@ package main
 import (
 	"fmt"
 
-	"github.com/kishan-thanki/go-math-utils/integer"
-	"github.com/kishan-thanki/go-math-utils/numeric"
-	"github.com/kishan-thanki/go-math-utils/sequence"
-	"github.com/kishan-thanki/go-math-utils/stats"
+	"go-math-utils/integer"
+	"go-math-utils/numeric"
+	"go-math-utils/sequence"
+	"go-math-utils/stats"
 )
 
 func main() {
@@ -150,7 +150,7 @@ func main() {
 	fmt.Println("Is 28 perfect?", integer.PerfectNumber(28)) // true
 
 	// Numeric helpers
-	fmt.Println("Min of 10 and 20:", numeric.Min(10, 20)) // 10
+	fmt.Println("Min of 10 and 20:", min(10, 20)) // 10
 
 	// Stats slice calculations
 	intSlice := []int{1, 3, 3, 2, 3, 4, 5}
@@ -198,8 +198,7 @@ func main() {
 [cols="1,2,2", options="header"]
 |===
 | Function | Signature | Notes
-| `Min` | `Min[T cmp.Ordered](a, b T) T` | Returns the minimum of two ordered values
-| `Max` | `Max[T cmp.Ordered](a, b T) T` | Returns the maximum of two ordered values
+
 | `Clamp` | `Clamp[T cmp.Ordered](val, min, max T) T` | Clamps val between min and max; panics if min > max
 | `Abs` | `Abs[T SignedOrFloat](x T) T` | Absolute value; MinInt wraps due to overflow
 | `Sign` | `Sign[T SignedOrFloat](x T) int` | Returns -1 (negative), 0 (zero), or 1 (positive)
