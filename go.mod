@@ -1,3 +1,3 @@
-module github.com/kishan-thanki/go-math-utils
+module github.com/kishan-thanki/stats
 
-go 1.23.4
+go 1.21
