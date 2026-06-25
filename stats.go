@@ -3,8 +3,7 @@ package stats
 import (
 	"cmp"
 	"errors"
-	"math"
-	"reflect"
+
 	"slices"
 )
 
@@ -83,148 +82,20 @@ func SumSlice[T IntegerOrFloat](slice []T) (T, error) {
 		return zero, errors.New("cannot calculate sum of an empty slice")
 	}
 
+	var sum T
 	var zero T
-	switch reflect.TypeOf(zero).Kind() {
-	case reflect.Float32:
-		var sum float32
-		for _, v := range slice {
-			sum += float32(v)
+	for _, v := range slice {
+		prev := sum
+		sum += v
+
+		if v > zero && sum < prev {
+			return zero, errors.New("sum overflows type")
 		}
-		return T(sum), nil
-	case reflect.Float64:
-		var sum float64
-		for _, v := range slice {
-			sum += float64(v)
+		if v < zero && sum > prev {
+			return zero, errors.New("sum underflows type")
 		}
-		return T(sum), nil
-	case reflect.Int:
-		var sum int
-		for _, v := range slice {
-			val := int(v)
-			if val > 0 && sum > math.MaxInt-val {
-				return zero, errors.New("sum overflows type")
-			}
-			if val < 0 && sum < math.MinInt-val {
-				return zero, errors.New("sum underflows type")
-			}
-			sum += val
-		}
-		return T(sum), nil
-	case reflect.Int8:
-		var sum int8
-		for _, v := range slice {
-			val := int8(v)
-			if val > 0 && sum > math.MaxInt8-val {
-				return zero, errors.New("sum overflows type")
-			}
-			if val < 0 && sum < math.MinInt8-val {
-				return zero, errors.New("sum underflows type")
-			}
-			sum += val
-		}
-		return T(sum), nil
-	case reflect.Int16:
-		var sum int16
-		for _, v := range slice {
-			val := int16(v)
-			if val > 0 && sum > math.MaxInt16-val {
-				return zero, errors.New("sum overflows type")
-			}
-			if val < 0 && sum < math.MinInt16-val {
-				return zero, errors.New("sum underflows type")
-			}
-			sum += val
-		}
-		return T(sum), nil
-	case reflect.Int32:
-		var sum int32
-		for _, v := range slice {
-			val := int32(v)
-			if val > 0 && sum > math.MaxInt32-val {
-				return zero, errors.New("sum overflows type")
-			}
-			if val < 0 && sum < math.MinInt32-val {
-				return zero, errors.New("sum underflows type")
-			}
-			sum += val
-		}
-		return T(sum), nil
-	case reflect.Int64:
-		var sum int64
-		for _, v := range slice {
-			val := int64(v)
-			if val > 0 && sum > math.MaxInt64-val {
-				return zero, errors.New("sum overflows type")
-			}
-			if val < 0 && sum < math.MinInt64-val {
-				return zero, errors.New("sum underflows type")
-			}
-			sum += val
-		}
-		return T(sum), nil
-	case reflect.Uint:
-		var sum uint
-		for _, v := range slice {
-			val := uint(v)
-			if sum > math.MaxUint-val {
-				return zero, errors.New("sum overflows type")
-			}
-			sum += val
-		}
-		return T(sum), nil
-	case reflect.Uint8:
-		var sum uint8
-		for _, v := range slice {
-			val := uint8(v)
-			if sum > math.MaxUint8-val {
-				return zero, errors.New("sum overflows type")
-			}
-			sum += val
-		}
-		return T(sum), nil
-	case reflect.Uint16:
-		var sum uint16
-		for _, v := range slice {
-			val := uint16(v)
-			if sum > math.MaxUint16-val {
-				return zero, errors.New("sum overflows type")
-			}
-			sum += val
-		}
-		return T(sum), nil
-	case reflect.Uint32:
-		var sum uint32
-		for _, v := range slice {
-			val := uint32(v)
-			if sum > math.MaxUint32-val {
-				return zero, errors.New("sum overflows type")
-			}
-			sum += val
-		}
-		return T(sum), nil
-	case reflect.Uint64:
-		var sum uint64
-		for _, v := range slice {
-			val := uint64(v)
-			if sum > math.MaxUint64-val {
-				return zero, errors.New("sum overflows type")
-			}
-			sum += val
-		}
-		return T(sum), nil
-	case reflect.Uintptr:
-		var sum uintptr
-		for _, v := range slice {
-			val := uintptr(v)
-			if sum > ^uintptr(0)-val {
-				return zero, errors.New("sum overflows type")
-			}
-			sum += val
-		}
-		return T(sum), nil
-	default:
-		return zero, errors.New("unsupported type")
 	}
+	return sum, nil
 }
 
 // MinSlice returns the minimum value in a slice of ordered values.
