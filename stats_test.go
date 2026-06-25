@@ -230,3 +230,20 @@ func TestMaxSlice(t *testing.T) {
 		t.Errorf("MaxSlice([banana,apple,cherry]) = (%v, %v); want (cherry, nil)", resStr, err)
 	}
 }
+
+type MyTemperature float64
+type MyInt int
+
+func TestSumSlice_CustomType(t *testing.T) {
+	temps := []MyTemperature{98.6, 100.4, 99.0}
+	tempSum, err := SumSlice(temps)
+	if err != nil || tempSum != 298.0 {
+		t.Errorf("SumSlice(temps) = (%v, %v); want (298.0, nil)", tempSum, err)
+	}
+
+	ints := []MyInt{1, 2, 3}
+	intSum, err := SumSlice(ints)
+	if err != nil || intSum != 6 {
+		t.Errorf("SumSlice(ints) = (%v, %v); want (6, nil)", intSum, err)
+	}
+}

@@ -4,6 +4,7 @@ import (
 	"cmp"
 	"errors"
 	"math"
+	"reflect"
 	"slices"
 )
 
@@ -83,23 +84,23 @@ func SumSlice[T IntegerOrFloat](slice []T) (T, error) {
 	}
 
 	var zero T
-	switch any(zero).(type) {
-	case float32:
+	switch reflect.TypeOf(zero).Kind() {
+	case reflect.Float32:
 		var sum float32
 		for _, v := range slice {
-			sum += any(v).(float32)
+			sum += float32(v)
 		}
-		return any(sum).(T), nil
-	case float64:
+		return T(sum), nil
+	case reflect.Float64:
 		var sum float64
 		for _, v := range slice {
-			sum += any(v).(float64)
+			sum += float64(v)
 		}
-		return any(sum).(T), nil
-	case int:
+		return T(sum), nil
+	case reflect.Int:
 		var sum int
 		for _, v := range slice {
-			val := any(v).(int)
+			val := int(v)
 			if val > 0 && sum > math.MaxInt-val {
 				return zero, errors.New("sum overflows type")
 			}
@@ -108,11 +109,11 @@ func SumSlice[T IntegerOrFloat](slice []T) (T, error) {
 			}
 			sum += val
 		}
-		return any(sum).(T), nil
-	case int8:
+		return T(sum), nil
+	case reflect.Int8:
 		var sum int8
 		for _, v := range slice {
-			val := any(v).(int8)
+			val := int8(v)
 			if val > 0 && sum > math.MaxInt8-val {
 				return zero, errors.New("sum overflows type")
 			}
@@ -121,11 +122,11 @@ func SumSlice[T IntegerOrFloat](slice []T) (T, error) {
 			}
 			sum += val
 		}
-		return any(sum).(T), nil
-	case int16:
+		return T(sum), nil
+	case reflect.Int16:
 		var sum int16
 		for _, v := range slice {
-			val := any(v).(int16)
+			val := int16(v)
 			if val > 0 && sum > math.MaxInt16-val {
 				return zero, errors.New("sum overflows type")
 			}
@@ -134,11 +135,11 @@ func SumSlice[T IntegerOrFloat](slice []T) (T, error) {
 			}
 			sum += val
 		}
-		return any(sum).(T), nil
-	case int32:
+		return T(sum), nil
+	case reflect.Int32:
 		var sum int32
 		for _, v := range slice {
-			val := any(v).(int32)
+			val := int32(v)
 			if val > 0 && sum > math.MaxInt32-val {
 				return zero, errors.New("sum overflows type")
 			}
@@ -147,11 +148,11 @@ func SumSlice[T IntegerOrFloat](slice []T) (T, error) {
 			}
 			sum += val
 		}
-		return any(sum).(T), nil
-	case int64:
+		return T(sum), nil
+	case reflect.Int64:
 		var sum int64
 		for _, v := range slice {
-			val := any(v).(int64)
+			val := int64(v)
 			if val > 0 && sum > math.MaxInt64-val {
 				return zero, errors.New("sum overflows type")
 			}
@@ -160,67 +161,67 @@ func SumSlice[T IntegerOrFloat](slice []T) (T, error) {
 			}
 			sum += val
 		}
-		return any(sum).(T), nil
-	case uint:
+		return T(sum), nil
+	case reflect.Uint:
 		var sum uint
 		for _, v := range slice {
-			val := any(v).(uint)
+			val := uint(v)
 			if sum > math.MaxUint-val {
 				return zero, errors.New("sum overflows type")
 			}
 			sum += val
 		}
-		return any(sum).(T), nil
-	case uint8:
+		return T(sum), nil
+	case reflect.Uint8:
 		var sum uint8
 		for _, v := range slice {
-			val := any(v).(uint8)
+			val := uint8(v)
 			if sum > math.MaxUint8-val {
 				return zero, errors.New("sum overflows type")
 			}
 			sum += val
 		}
-		return any(sum).(T), nil
-	case uint16:
+		return T(sum), nil
+	case reflect.Uint16:
 		var sum uint16
 		for _, v := range slice {
-			val := any(v).(uint16)
+			val := uint16(v)
 			if sum > math.MaxUint16-val {
 				return zero, errors.New("sum overflows type")
 			}
 			sum += val
 		}
-		return any(sum).(T), nil
-	case uint32:
+		return T(sum), nil
+	case reflect.Uint32:
 		var sum uint32
 		for _, v := range slice {
-			val := any(v).(uint32)
+			val := uint32(v)
 			if sum > math.MaxUint32-val {
 				return zero, errors.New("sum overflows type")
 			}
 			sum += val
 		}
-		return any(sum).(T), nil
-	case uint64:
+		return T(sum), nil
+	case reflect.Uint64:
 		var sum uint64
 		for _, v := range slice {
-			val := any(v).(uint64)
+			val := uint64(v)
 			if sum > math.MaxUint64-val {
 				return zero, errors.New("sum overflows type")
 			}
 			sum += val
 		}
-		return any(sum).(T), nil
-	case uintptr:
+		return T(sum), nil
+	case reflect.Uintptr:
 		var sum uintptr
 		for _, v := range slice {
-			val := any(v).(uintptr)
+			val := uintptr(v)
 			if sum > ^uintptr(0)-val {
 				return zero, errors.New("sum overflows type")
 			}
 			sum += val
 		}
-		return any(sum).(T), nil
+		return T(sum), nil
 	default:
 		return zero, errors.New("unsupported type")
 	}
